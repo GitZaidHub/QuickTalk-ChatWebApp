@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background-color: #374151;
+}
+
+@layer utilities {
+    /* Custom scrollbar styles */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+  
+    /* Track (scrollbar background) */
+    ::-webkit-scrollbar-track {
+      background: #e2e8f0; /* Light gray background (customize as needed) */
+    }
+  
+    /* Handle (scrollbar thumb) */
+    ::-webkit-scrollbar-thumb {
+      background-color: #4a90e2; /* Blue handle (customize as needed) */
+      border-radius: 10px; /* Rounded corners */
+      border: 2px solid #ffffff; /* Optional white border for contrast */
+    }
+  
+    /* Hover effect on scrollbar handle */
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #3b82f6; /* Darker blue on hover */
+    }
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+  
+  .shake {
+    animation: shake 0.5s ease-in-out;
+  }
+  
