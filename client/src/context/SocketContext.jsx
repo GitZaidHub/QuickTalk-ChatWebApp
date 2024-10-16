@@ -13,10 +13,9 @@ export const SocketContextProvider = ({children})=>{
     const [socket, setSocket] = useState(null)
     const [onlineUsers, setOnlineUsers] = useState([])
     const {author} = useAuthContext()
-//https://quicktalk-chatapp.onrender.com'
     useEffect(() => {
       if(author){
-        const socket = io('http://localhost:5000',{
+        const socket = io('https://quicktalk-chatwebapp.onrender.com',{
             query:{
                 userId: author.id,
             }
