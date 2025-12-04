@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
   const { author } = useAuthContext()
   useEffect(() => {
     if (author) {
-      const socket = io(import.meta.env.VITE_SERVER_URL || "http://localhost:5000", {
+      const socket = io(import.meta.env.VITE_SERVER_URL || "https://quicktalk-chatwebapp.onrender.com", {
         query: {
           userId: author.id,
         }
