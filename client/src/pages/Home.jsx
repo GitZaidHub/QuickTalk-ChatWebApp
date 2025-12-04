@@ -1,23 +1,24 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from '../components/sidebar/Sidebar'
 import MessageContainer from '../components/message/MessageContainer'
 import { useAuthContext } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
-  const {author,setAuthor} = useAuthContext()
+  const { author } = useAuthContext()
   const navigate = useNavigate();
+
   useEffect(() => {
-    if(!author){
-      navigate("/login")
+    if (!author) {
+      navigate("/landingPage")
     }
-  }, [])
-  
+  }, [author, navigate])
+
 
   return (
-    <div className="flex md:h-[90%] h-[99%] w-[99%] mx-3 md:w-[90%]  container sm:mx-11 bg-[#f1f5f9] rounded-lg overflow-hidden  ">
-      <Sidebar/>
-      <MessageContainer/>   
+    <div className="flex h-screen w-full bg-white overflow-hidden">
+      <Sidebar />
+      <MessageContainer />
     </div>
   )
 }

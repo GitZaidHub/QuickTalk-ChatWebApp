@@ -1,42 +1,55 @@
 import React from 'react'
 import useConverSation from '../../zustand/useConversation'
-import { IoVideocam } from "react-icons/io5";
-import { IoMdCall } from "react-icons/io";
+import { Video, Phone, MoreVertical } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { useSocketContext } from '../../context/SocketContext';
 
 const Header = () => {
-  const {onlineUsers} = useSocketContext()
-  const {selectedConversation , setSelectedConversation} = useConverSation();
+  const { onlineUsers } = useSocketContext()
+  const { selectedConversation } = useConverSation();
   const isOnline = onlineUsers.includes(selectedConversation._id)
 
   return (
-    <div className="flex justify-between items-center p-2.5 border-b border-gray-300 ">
-      <div className="flex items-center gap-3">
-        <div className="rounded-full w-11 h-11 border border-gray-300 overflow-hidden">
-          <img
-            src={selectedConversation?.profilePic}
-            alt="avatar"
-            className="object-cover w-full h-full"
-          />
+    <div className="flex justify-between items-center px-6 py-3 border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <div className="w-10 h-10 rounded-full p-[2px] bg-gradient-to-tr from-indigo-500 to-purple-500">
+            <img
+              src={selectedConversation?.profilePic}
+              alt="avatar"
+              className="object-cover w-full h-full rounded-full border-2 border-white"
+            />
+          </div>
+          {isOnline && (
+            <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
+          )}
         </div>
-        <div className='flex flex-col '>
 
-        <span className="font-semibold text-gray-800">{selectedConversation?.username}</span>
-       {isOnline && ( <span className='text-blue-700'>Online</span>)}
+        <div className='flex flex-col'>
+          <span className="font-bold text-slate-800 text-sm">{selectedConversation?.username}</span>
+          <span className={`text-xs ${isOnline ? 'text-emerald-600 font-medium' : 'text-slate-500'}`}>
+            {isOnline ? 'Active now' : 'Offline'}
+          </span>
         </div>
       </div>
-      <div className="text-xl flex items-center flex-row-reverse  gap-5 w-1/6 text-gray-500 ">
-        <div className='rounded-md bg-slate-300 text-black p-1 cursor-pointer hover:text-normal hover:bg-slate-400'>
 
-        <Link to={'/construction'}> <IoVideocam /></Link> 
-        </div>
-        <div className='rounded-md bg-slate-300 text-black p-1 cursor-pointer hover:text-normal hover:bg-slate-400'>
-
-         <Link to={'/construction'}><IoMdCall/></Link> 
-        </div>
+      <div className="flex items-center gap-2">
+        <Link
+          to={'/construction'}
+          className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
+        >
+          <Phone size={20} />
+        </Link>
+        <Link
+          to={'/construction'}
+          className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all"
+        >
+          <Video size={20} />
+        </Link>
+        <button className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all">
+          <MoreVertical size={20} />
+        </button>
       </div>
-      
     </div>
   )
 }

@@ -1,37 +1,44 @@
-import {React,useEffect} from 'react'
+import { React, useEffect } from 'react'
 import Header from './Header'
 import Messages from './Messages'
 import MessageInput from './MessageInput'
 import useConverSation from '../../zustand/useConversation'
 import { useAuthContext } from '../../context/AuthContext'
-import { RiChatSmile3Line } from "react-icons/ri";
+import { MessageSquare } from "lucide-react";
 
 const MessageContainer = () => {
-  const {author} = useAuthContext();
-  const {selectedConversation , setSelectedConversation} = useConverSation();
+  const { author } = useAuthContext();
+  const { selectedConversation, setSelectedConversation } = useConverSation();
+
   useEffect(() => {
-    // cleanup
     return () => setSelectedConversation(null)
   }, [setSelectedConversation])
-  
 
   return (
-    <div className='flex flex-col w-3/4'>
-      {!selectedConversation ? <div className='flex items-center flex-col justify-center bg-gray-400 w-full h-full'>
-        <div className=' flex flex-row'>
-
-        <h1 className='text-white mb-12 py-4 text-2xl  font-bold'>Welcome to <span className='text-blue-900'>QuickTalk</span><span className='flex items-center text-3xl justify-center'><RiChatSmile3Line/></span> </h1>
+    <div className='flex flex-col flex-1 h-full bg-white relative'>
+      {!selectedConversation ? (
+        <div className='flex items-center flex-col justify-center w-full h-full bg-slate-50/50'>
+          <div className='flex flex-col items-center justify-center p-8 text-center space-y-6 max-w-md'>
+            <div className="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center animate-bounce-slow">
+              <MessageSquare size={40} className="text-indigo-600" />
+            </div>
+            <div className='space-y-2'>
+              <h1 className='text-2xl font-bold text-slate-800'>
+                Welcome, {author?.username}!
+              </h1>
+              <p className='text-slate-500'>
+                Select a conversation from the sidebar to start chatting or find new friends to connect with.
+              </p>
+            </div>
+          </div>
         </div>
-        <div className='px-4 text-center sm:text-lg md:text-xl  text-white font-semibold flex flex-col items-center gap-2'>
-          <span>Hi 👋 {author?.username} </span>
-          <span>Click any chat to start conversation</span>
-        </div>
-      </div> : <>
-      <Header />
-      <Messages/>
-      <MessageInput/>
-      </>
-}
+      ) : (
+        <>
+          <Header />
+          <Messages />
+          <MessageInput />
+        </>
+      )}
     </div>
   )
 }

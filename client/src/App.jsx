@@ -6,10 +6,10 @@ import Home from "./pages/Home";
 function App() {
   return (
     <>
-      <div className="flex relative items-center justify-center h-screen">
+      <>
         <Outlet />
-        <Toaster  />
-      </div>
+        <Toaster />
+      </>
     </>
   );
 }

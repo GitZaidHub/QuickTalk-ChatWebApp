@@ -1,10 +1,9 @@
 import { React, useEffect, useState } from "react";
 import userSignup from "../hooks/useSignup";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
+import { MessageCircle, User, Lock, ArrowRight, Loader2, Type } from "lucide-react";
+
 const Signup = () => {
   const [userData, setuserData] = useState({
     fullName: "",
@@ -12,16 +11,17 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
-  const {author} =useAuthContext()
-  const navigate = useNavigate()
+  const { author } = useAuthContext();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if(author){
-      navigate("/")
+    if (author) {
+      navigate("/");
     }
-  }, [author])
-  
+  }, [author, navigate]);
 
   const { loading, Signup } = userSignup();
+
   const handleChange = (e) => {
     setuserData((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
@@ -32,139 +32,184 @@ const Signup = () => {
     e.preventDefault();
     await Signup(userData);
   };
+
   return (
-    <div className="container bg-[#f1f5f9] rounded-lg shadow-lg md:h-3/4 md:w-3/4 md:gap-24  w-full h-full flex flex-col md:flex-row items-center justify-center p-6 md:p-10 ">
-  {/* Image Section */}
-  <div className="w-1/2 ">
-    <img className="rounded-lg w-full h-auto object-cover" src="/signup.webp" alt="Sign Up Illustration" />
-  </div>
+    <div className="min-h-screen w-full bg-slate-50 flex">
+      {/* Left Side - Visual & Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-indigo-600 relative overflow-hidden items-center justify-center p-12">
+        {/* Background Effects */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-600 to-purple-700 opacity-90 z-10"></div>
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl z-0"></div>
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500 opacity-20 rounded-full blur-3xl z-0"></div>
 
-  {/* Form Section */}
-  <div className="md:w-1/2 w-full flex flex-col items-center">
-    <h1 className="text-2xl md:text-4xl py-4 font-semibold text-gray-800">Sign Up</h1>
+        <div className="relative z-20 text-white max-w-lg">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+              <MessageCircle size={32} className="text-white" />
+            </div>
+            <span className="text-3xl font-bold tracking-tight">QuickTalk</span>
+          </div>
+          <h1 className="text-5xl font-bold mb-6 leading-tight">
+            Join the community today.
+          </h1>
+          <p className="text-indigo-100 text-lg leading-relaxed mb-8">
+            Create an account to start connecting with friends, sharing ideas, and collaborating in real-time.
+          </p>
 
-    <form className="md:w-2/3 w-[90%] h-[60vh] " onSubmit={handleSubmit}>
-      {/* Full Name Input */}
-      <div className="md:mb-5 mb-2">
-        <label
-          htmlFor="fullName"
-          className="block mb-2 text-sm font-medium text-gray-900"
-        >
-          Your Name
-        </label>
-        <input
-          type="text"
-          name="fullName"
-          value={userData.fullName}
-          onChange={handleChange}
-          className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 transition-all duration-200 ease-in-out"
-          placeholder="Enter Full Name"
-          required
-        />
+          <div className="grid grid-cols-2 gap-6 text-sm text-indigo-100">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center">
+                <User size={16} />
+              </div>
+              <span>Free forever</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center">
+                <Lock size={16} />
+              </div>
+              <span>Secure & Private</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Username Input */}
-      <div className="mb-5">
-        <label
-          htmlFor="username"
-          className="block mb-2 text-sm font-medium text-gray-900"
-        >
-          Your Username
-        </label>
-        <input
-          type="text"
-          name="username"
-          value={userData.username}
-          onChange={handleChange}
-          className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 transition-all duration-200 ease-in-out"
-          placeholder="Enter Username"
-          required
-        />
-      </div>
+      {/* Right Side - Signup Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-white">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center lg:text-left">
+            <div className="lg:hidden flex justify-center mb-6">
+              <div className="bg-indigo-600 p-2 rounded-lg text-white inline-flex">
+                <MessageCircle size={24} />
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-slate-900">Create your account</h2>
+            <p className="mt-2 text-slate-500">
+              Already have an account?{" "}
+              <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                Log in
+              </Link>
+            </p>
+          </div>
 
-      {/* Password Input */}
-      <div className="mb-5">
-        <label
-          htmlFor="password"
-          className="block mb-2 text-sm font-medium text-gray-900"
-        >
-          Your Password
-        </label>
-        <input
-          type="password"
-          name="password"
-          value={userData.password}
-          onChange={handleChange}
-          className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 transition-all duration-200 ease-in-out"
-          placeholder="Enter Password"
-          required
-        />
-      </div>
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 mb-1">
+                Full Name
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Type className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  required
+                  value={userData.fullName}
+                  onChange={handleChange}
+                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white"
+                  placeholder="John Doe"
+                />
+              </div>
+            </div>
 
-      {/* Confirm Password Input */}
-      <div className="mb-5">
-        <label
-          htmlFor="confirmPassword"
-          className="block mb-2 text-sm font-medium text-gray-900"
-        >
-          Confirm Password
-        </label>
-        <input
-          type="password"
-          name="confirmPassword"
-          value={userData.confirmPassword}
-          onChange={handleChange}
-          className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 transition-all duration-200 ease-in-out"
-          placeholder="Repeat Password"
-          required
-        />
-      </div>
+            {/* Username */}
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-slate-700 mb-1">
+                Username
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  required
+                  value={userData.username}
+                  onChange={handleChange}
+                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white"
+                  placeholder="johndoe123"
+                />
+              </div>
+            </div>
 
-      {/* Submit Button */}
-      <div className="flex justify-between gap-3 items-center mb-3">
-      <button
-  type="submit"
-  disabled={loading}
-  className={`text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-3 transition-all duration-200 ease-in-out flex items-center justify-center ${
-    loading ? `cursor-not-allowed opacity-50` : `cursor-pointer`
-  }`}
->
-  {loading ? (
-    <div role="status" className="flex items-center">
-      <svg
-        aria-hidden="true"
-        className="w-5 h-5 text-gray-200 animate-spin fill-gray-600"
-        viewBox="0 0 100 101"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-          fill="currentColor"
-        />
-        <path
-          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-          fill="currentFill"
-        />
-      </svg>
-      <span className="ml-2">Loading...</span>
+            {/* Password */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+                Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={userData.password}
+                  onChange={handleChange}
+                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-slate-400" />
+                </div>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  value={userData.confirmPassword}
+                  onChange={handleChange}
+                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all transform active:scale-[0.98] mt-6"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
+                  Creating account...
+                </>
+              ) : (
+                <>
+                  Create Account
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </button>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-slate-500">Protected by QuickTalk Security</span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-  ) : (
-    "Signup"
-  )}
-</button>
-
-        <small className="text-gray-600">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:text-blue-800">
-            Login
-          </Link>
-        </small>
-      </div>
-    </form>
-  </div>
-</div>
-
   );
 };
 

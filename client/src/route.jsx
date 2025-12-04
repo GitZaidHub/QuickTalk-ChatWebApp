@@ -9,6 +9,7 @@ import { SocketContextProvider } from "./context/SocketContext";
 import Logout from "./pages/Logout";
 import Error from "./pages/Error";
 import Construction from "./pages/Construction";
+import LandingPage from "./pages/LandingPage";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,8 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/logout", element: <Logout /> },
       { path: "/signup", element: <Signup /> },
-      {path:"/construction", element:<Construction/>},
+      { path: "/construction", element: <Construction /> },
+      { path: "/landingPage", element: <LandingPage /> },
       { path: "/:id", element: <Userprofile /> },
     ],
   },

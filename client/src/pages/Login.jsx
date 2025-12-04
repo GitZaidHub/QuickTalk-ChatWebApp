@@ -1,129 +1,168 @@
-import { React, useState,useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import { useAuthContext } from "../context/AuthContext";
+import { MessageCircle, User, Lock, ArrowRight, Loader2 } from "lucide-react";
 
 const Login = () => {
   const [userData, setuserData] = useState({
-    fullName: "",
     username: "",
     password: "",
-    repeatPassword: "",
   });
-  const {author,setAuthor} = useAuthContext();
-  const navigate = useNavigate()
+  const { author } = useAuthContext();
+  const navigate = useNavigate();
 
-  
   useEffect(() => {
-    if(author){
-      navigate("/")
+    if (author) {
+      navigate("/");
     }
-  }, [author])
+  }, [author, navigate]);
 
   const { loading, Login } = useLogin();
+
   const handleChange = (e) => {
     setuserData((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await Login(userData);
   };
 
   return (
-    <div className="bg-[#f1f5f9] rounded-lg shadow-lg md:h-3/4 md:w-3/4 w-full md:gap-24  h-full flex md:flex-row flex-col items-center justify-center p-6 md:p-10">
-  {/* Image Section */}
-  <div className="md:w-1/3 h-auto">
-    <img className="rounded-lg md:w-full w-3/4 md:h-auto h-3/4 object-cover" src="/login1.png" alt="Login Illustration" />
-  </div>
+    <div className="min-h-screen w-full bg-slate-50 flex">
+      {/* Left Side - Visual & Branding */}
+      <div className="hidden lg:flex lg:w-1/2 bg-indigo-600 relative overflow-hidden items-center justify-center p-12">
+        {/* Background Effects */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-600 to-purple-700 opacity-90 z-10"></div>
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl z-0"></div>
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500 opacity-20 rounded-full blur-3xl z-0"></div>
 
-  {/* Form Section */}
-  <form className="md:w-1/3 w-[90%]" onSubmit={handleSubmit}>
-    <h1 className="text-2xl md:text-4xl py-4 font-semibold text-gray-800 text-center md:text-left">Log In</h1>
+        <div className="relative z-20 text-white max-w-lg">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+              <MessageCircle size={32} className="text-white" />
+            </div>
+            <span className="text-3xl font-bold tracking-tight">QuickTalk</span>
+          </div>
+          <h1 className="text-5xl font-bold mb-6 leading-tight">
+            Welcome back to the conversation.
+          </h1>
+          <p className="text-indigo-100 text-lg leading-relaxed mb-8">
+            Connect with friends, share moments, and collaborate in real-time. Your community is waiting for you.
+          </p>
 
-    {/* Username Input */}
-    <div className="mb-6">
-      <label
-        htmlFor="username"
-        className="block mb-2 text-sm font-medium text-gray-800"
-      >
-        Your Username
-      </label>
-      <input
-        type="text"
-        name="username"
-        value={userData.username}
-        onChange={handleChange}
-        className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 transition-all duration-200 ease-in-out"
-        placeholder="Username"
-        required
-      />
+          <div className="flex items-center gap-4 text-sm text-indigo-200 font-medium">
+            <div className="flex -space-x-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="w-10 h-10 rounded-full border-2 border-indigo-500 bg-indigo-400 overflow-hidden">
+                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 20}`} alt="avatar" />
+                </div>
+              ))}
+            </div>
+            <p>Join 10,000+ users online now</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-white">
+        <div className="w-full max-w-md space-y-8">
+          <div className="text-center lg:text-left">
+            <div className="lg:hidden flex justify-center mb-6">
+              <div className="bg-indigo-600 p-2 rounded-lg text-white inline-flex">
+                <MessageCircle size={24} />
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-slate-900">Sign in to your account</h2>
+            <p className="mt-2 text-slate-500">
+              Don't have an account?{" "}
+              <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
+                Sign up for free
+              </Link>
+            </p>
+          </div>
+
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <div className="space-y-5">
+              <div>
+                <label htmlFor="username" className="block text-sm font-medium text-slate-700 mb-1">
+                  Username
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    required
+                    value={userData.username}
+                    onChange={handleChange}
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white"
+                    placeholder="Enter your username"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+                    Password
+                  </label>
+
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-slate-400" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    value={userData.password}
+                    onChange={handleChange}
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-slate-50 hover:bg-white"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all transform active:scale-[0.98]"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign in
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </button>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-slate-500">Protected by QuickTalk Security</span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-
-    {/* Password Input */}
-    <div className="mb-6">
-      <label
-        htmlFor="password"
-        className="block mb-2 text-sm font-medium text-gray-800"
-      >
-        Your Password
-      </label>
-      <input
-        type="password"
-        name="password"
-        value={userData.password}
-        onChange={handleChange}
-        className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 transition-all duration-200 ease-in-out"
-        placeholder="Password"
-        required
-      />
-    </div>
-
-    {/* Submit Button */}
-    <div className="flex justify-between  gap-3 items-center mb-4">
-    <button
-  type="submit"
-  disabled={loading}
-  className={`text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 lg:font-medium rounded-lg text-sm lg:px-6 px-2 lg:py-3 py-1 transition-all duration-200 ease-in-out flex items-center justify-center ${
-    loading ? `cursor-not-allowed opacity-50` : `cursor-pointer`
-  }`}
->
-  {loading ? (
-    <div role="status" className="flex items-center">
-      <svg
-        aria-hidden="true"
-        className="w-5 h-5 text-gray-200 animate-spin fill-gray-600"
-        viewBox="0 0 100 101"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-          fill="currentColor"
-        />
-        <path
-          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-          fill="currentFill"
-        />
-      </svg>
-      <span className="ml-2">Loading...</span>
-    </div>
-  ) : (
-    "Log In"
-  )}
-</button>
-
-      <small className="text-gray-600">
-        Don't have an account?{" "}
-        <Link to="/signup" className="text-blue-600 hover:text-blue-800">
-          Signup
-        </Link>
-      </small>
-    </div>
-  </form>
-</div>
-
   );
 };
 
