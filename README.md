@@ -47,11 +47,11 @@ Install dependencies for both client and server:
 
 npm install
 cd client && npm install
-3.Create a .env file in the root directory with the following configuration:
+#### 3.Create a .env file in the root directory with the following configuration:
 MONGO_URI=your_mongodb_atlas_uri
 JWT_SECRET=your_jwt_secret_key
 SOCKET_PORT=5000
-4. Run the app:
+#### 4. Run the app:
 
 For development (both client and server):
 npm run dev
